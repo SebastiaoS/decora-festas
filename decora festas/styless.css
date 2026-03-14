@@ -1,0 +1,288 @@
+/* 1. VARIÁVEIS GLOBAIS */
+:root {
+    --primary-color: #D81B60;
+    --secondary-color: #AD1457;
+    --bg-color: #FAFAFA;
+    --white: #ffffff;
+    --text-main: #424242;
+    --text-light: #757575;
+    --text-dark: #212121;
+    --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* 2. RESET E ESTRUTURA STICKY FOOTER */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background-color: var(--bg-color);
+    overflow-x: hidden; /* Fundamental para o carrossel não quebrar o mobile */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+/* 3. HEADER & NAVEGAÇÃO */
+header {
+    width: 100%;
+    padding: 20px 0 10px;
+    flex-shrink: 0;
+}
+
+.logo {
+    display: block;
+    margin: 0 auto 10px;
+    width: 110px;
+}
+
+.logo img {
+    width: 100%;
+    border-radius: 50%;
+}
+
+.navegacao {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    gap: 1.5rem;
+}
+
+.navegacao a {
+    text-decoration: none;
+    color: var(--text-light);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+}
+
+/* 4. TÍTULOS (APROXIMAÇÃO TOTAL) */
+section {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+}
+
+.titulo-sessao, h1 {
+    font-size: 2rem;
+    color: var(--text-dark);
+    margin-bottom: 2px;
+}
+
+@media (max-width: 768px) {
+    /* ... outras regras ... */
+
+    .subtitulo {
+        font-size: 0.75rem;     /* Diminuímos bem a fonte para caber na linha */
+        white-space: wrap;   
+        width: 95%;             /* Ocupa quase toda a largura do celular */
+        overflow: hidden;       /* Esconde o que sobrar */
+        text-overflow: ellipsis; /* Se ainda assim não couber, ele coloca "..." no final */
+        margin-bottom: 10px !important;
+        display: block;         /* Garante que o alinhamento funcione */
+        text-align: center;
+    }
+}
+
+/* 5. CARROSSEL VITRINE (LARGURA TOTAL 100vw) */
+.container {
+    width: 100vw;
+    height: 450px;
+    overflow: visible; /* Garante que o Zoom 2x apareça */
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.carrossel {
+    width: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.item {
+    width: var(--width, 300px);
+    height: var(--height, 300px);
+    position: absolute;
+    /* MUDANÇA MASTER: Usamos transform em vez de left para não travar no mobile */
+    animation: autoRun 20s linear infinite;
+    animation-delay: calc((20s / var(--quantity)) * (var(--delay) / 2s) * -1) !important;
+}
+
+.item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    transition: var(--transition);
+}
+
+/* ANIMAÇÃO BLINDADA: Funciona em qualquer tela usando translateX */
+@keyframes autoRun {
+    from { transform: translateX(100vw); }
+    to { transform: translateX(-150vw); }
+}
+
+
+/* 6. INTERAÇÃO PREMIUM (FOCO E ZOOM 2X) */
+
+/* Quando o mouse entra no container, TODAS as fotos ficam cinzas e borradas */
+.container:hover .item {
+    animation-play-state: paused;   /* Para o carrossel */
+    filter: grayscale(1) contrast(0.8) blur(2px); /* Efeito de "apagado" */
+    opacity: 0.5;                   /* Deixa as outras mais transparentes */
+    transition: all 0.5s ease;      /* Transição suave para o cinza */
+}
+
+/* A foto que você colocar o mouse em cima ganha vida total */
+.container .item:hover {
+    filter: grayscale(0) contrast(1) blur(0); /* Volta a cor e nitidez original */
+    opacity: 1;                      /* Fica 100% visível */
+    z-index: 999;                    /* Salta para a frente de todas */
+}
+
+.container .item:hover img {
+    transform: scale(2);             /* O zoom de 2x que você queria */
+    box-shadow: 0 30px 60px rgba(0,0,0,0.5); /* Sombra pesada para dar profundidade */
+    border: 2px solid var(--white);  /* Uma bordinha branca fina para destacar do fundo cinza */
+}
+
+/* 7. SEÇÃO DE PROMOÇÃO */
+.secao-promo {
+    width: 100%;
+    padding: 60px 5%;
+    display: flex;
+    justify-content: center;
+    background-color: var(--white); /* Fundo branco para destacar do bg-color */
+    margin-top: 40px;
+}
+
+.promo-card {
+    max-width: 800px;
+    width: 100%;
+    background: linear-gradient(135deg, var(--accent-color), var(--white));
+    padding: 40px;
+    border-radius: 30px;
+    text-align: center;
+    box-shadow: 0 20px 40px rgba(216, 27, 96, 0.1);
+    border: 1px solid var(--accent-color);
+}
+
+.promo-badge {
+    display: inline-block;
+    background: var(--primary-color);
+    color: var(--white);
+    padding: 5px 15px;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+}
+
+.promo-card h2 {
+    color: var(--text-dark);
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+}
+
+.promo-card p {
+    color: var(--text-main);
+    margin-bottom: 30px;
+}
+
+/* BOTÃO DE AÇÃO (CTA) */
+.btn-promo {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--primary-color);
+    color: var(--white);
+    padding: 15px 35px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 700;
+    transition: var(--transition);
+    box-shadow: 0 10px 20px rgba(216, 27, 96, 0.2);
+}
+
+.btn-promo:hover {
+    background: var(--secondary-color);
+    transform: scale(1.05);
+    box-shadow: 0 15px 25px rgba(216, 27, 96, 0.3);
+}
+
+/* Ajuste Mobile */
+@media (max-width: 768px) {
+    .promo-card { padding: 30px 20px; }
+    .promo-card h2 { font-size: 1.4rem; }
+    .btn-promo { width: 100%; justify-content: center; }
+}
+
+/* 7. FOOTER */
+footer {
+    background: var(--text-dark);
+    color: var(--white);
+    padding: 2rem 5%;
+    text-align: center;
+    margin-top: auto;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+}
+
+.social-links {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.social-links a { color: var(--white); font-size: 1.3rem; }
+
+/* 8. RESPONSIVIDADE MOBILE (FIX) */
+@media (max-width: 768px) {
+    .titulo-sessao { font-size: 1.4rem; }
+    .subtitulo { font-size: 0.75rem; margin-bottom: 5px !important; }
+    
+    .container {
+        height: 300px;
+        overflow: hidden; /* No mobile, escondemos o excesso para evitar bugs de toque */
+    }
+    
+    .item {
+        --width: 150px !important;
+        --height: 150px !important;
+    }
+    
+    /* Reajuste da animação para mobile para ser mais curta e rápida */
+    @keyframes autoRun {
+        from { transform: translateX(100vw); }
+        to { transform: translateX(-250vw); }
+    }
+    
+    .container .item:hover img {
+        transform: scale(1.3); /* Zoom reduzido no celular por segurança */
+    }
+
+    .navegacao { gap: 0.8rem; }
+    .navegacao a { font-size: 0.65rem; }
+}
